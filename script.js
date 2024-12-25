@@ -8,14 +8,16 @@ const schedule = [
   { name: 'DJ Jigsaw', genre: 'DnB', location: 'UK', time: '2024-12-31T17:00:00-05:00' },
   { name: 'OneWay', genre: 'Hardstyle', location: 'Europe', time: '2024-12-31T18:00:00-05:00' },
   { name: 'NMA (Francisco)', genre: 'Dubstep', location: 'France', time: '2024-12-31T19:00:00-05:00' },
-  // Add more entries as needed
+  // Voeg hier extra DJ's toe
 ];
 
 const scheduleContainer = document.getElementById('schedule');
 
 schedule.forEach(event => {
-  const localTime = new Date(event.time).toLocaleString(undefined, {
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  // Zet EST tijd om naar de tijdzone van de gebruiker
+  const estTime = new Date(event.time); // Interpreteer tijd in EST
+  const localTime = estTime.toLocaleString(undefined, {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Gebruiker's lokale tijdzone
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -24,6 +26,7 @@ schedule.forEach(event => {
     minute: '2-digit',
   });
 
+  // Voeg een event-item toe aan de lijst
   const scheduleItem = document.createElement('div');
   scheduleItem.className = 'schedule-item';
   scheduleItem.innerHTML = `
