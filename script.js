@@ -1,59 +1,37 @@
-// URL naar je JSON-bestand
-const jsonURL = 'https://mailfromstefanie.github.io/vrchat-lineup/lineup.json';
+// List of DJs and times in EST (UTC-5)
+const schedule = [
+  { name: 'DJ Kaotic', genre: 'Open Genre', location: 'USA', time: '2024-12-31T11:00:00-05:00' },
+  { name: 'JCK', genre: 'Raw Techno', location: 'Philadelphia, USA', time: '2024-12-31T12:00:00-05:00' },
+  { name: 'M4tt', genre: 'Jersey Club', location: 'Japan', time: '2024-12-31T13:00:00-05:00' },
+  { name: '505uke', genre: 'Techno', location: 'Japan', time: '2024-12-31T14:00:00-05:00' },
+  { name: 'PARIS', genre: 'Techno', location: 'Germany', time: '2024-12-31T16:00:00-05:00' },
+  { name: 'DJ Jigsaw', genre: 'DnB', location: 'UK', time: '2024-12-31T17:00:00-05:00' },
+  { name: 'OneWay', genre: 'Hardstyle', location: 'Europe', time: '2024-12-31T18:00:00-05:00' },
+  { name: 'NMA (Francisco)', genre: 'Dubstep', location: 'France', time: '2024-12-31T19:00:00-05:00' },
+  // Add more entries as needed
+];
 
-// Functie om de huidige tijd te krijgen in HH:MM formaat
-function getCurrentTime() {
-  const now = new Date();
-  return now.toTimeString().slice(0, 5);
-}
+const scheduleContainer = document.getElementById('schedule');
 
-// Functie om de lineup dynamisch te laden
-function loadLineup() {
-  fetch(jsonURL)
-    .then((response) => response.json())
-    .then((data) => {
-      const lineupList = document.getElementById('lineup-list');
-      const currentTime = getCurrentTime();
-      let isActiveSet = false;
+schedule.forEach(event => {
+  const localTime = new Date(event.time).toLocaleString(undefined, {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
-      data.lineup.forEach((slot) => {
-        const { timeUTC, dj, genre } = slot;
+  const scheduleItem = document.createElement('div');
+  scheduleItem.className = 'schedule-item';
+  scheduleItem.innerHTML = `
+    <h2>${event.name}</h2>
+    <p><strong>Genre:</strong> ${event.genre}</p>
+    <p><strong>Location:</strong> ${event.location}</p>
+    <p><strong>Time:</strong> ${localTime}</p>
+  `;
 
-        // Zet tijd in lokale tijdzone
-        const time = new Date(`1970-01-01T${timeUTC}:00Z`).toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
-        });
-
-        // Maak een lineup-item
-        const item = document.createElement('div');
-        item.className = 'lineup-item';
-
-        // Highlight de huidige tijd
-        if (currentTime >= time && !isActiveSet) {
-          item.classList.add('active');
-          isActiveSet = true;
-        }
-
-        item.innerHTML = `
-          <div class="time">${time}</div>
-          <div class="dj">${dj}</div>
-          <div class="genre">${genre}</div>
-        `;
-
-        lineupList.appendChild(item);
-      });
-    })
-    .catch((error) => {
-      console.error('Error loading lineup:', error);
-    });
-}
-
-// Functie om de huidige tijd in de header bij te werken
-function updateCurrentTime() {
-  document.getElementById('current-time').textContent = `Current Time: ${getCurrentTime()}`;
-}
-
-// Initialiseer de functies
-loadLineup();
-setInterval(updateCurrentTime, 1000);
+  scheduleContainer.appendChild(scheduleItem);
+});
