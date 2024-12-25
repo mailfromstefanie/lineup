@@ -11,16 +11,17 @@ const schedule = [
   // Voeg hier meer DJ's toe
 ];
 
-// Het HTML-element waarin het schema wordt weergegeven
+// Selecteer de container waar de agenda komt
 const scheduleContainer = document.getElementById('schedule');
 
+// Doorloop alle items in de lijst
 schedule.forEach(event => {
-  // De originele tijd in UTC-05:00
-  const originalTime = new Date(event.time);
+  // Interpreteer de tijd als UTC-05:00
+  const eventTime = new Date(event.time);
 
-  // Converteer de tijd naar de lokale tijd van de gebruiker
-  const localTime = originalTime.toLocaleString(undefined, {
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Lokale tijdzone
+  // Converteer naar de lokale tijd van de gebruiker
+  const localTime = eventTime.toLocaleString(undefined, {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Haal de lokale tijdzone van de gebruiker op
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -29,7 +30,7 @@ schedule.forEach(event => {
     minute: '2-digit',
   });
 
-  // Maak een nieuwe weergave voor dit schema-item
+  // Maak een HTML-blok voor dit schema-item
   const scheduleItem = document.createElement('div');
   scheduleItem.className = 'schedule-item';
   scheduleItem.innerHTML = `
