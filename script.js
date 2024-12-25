@@ -1,4 +1,4 @@
-// List of DJs and times in EST (UTC-5)
+// De lijst met DJ's en hun schema in UTC-05:00 (EST)
 const schedule = [
   { name: 'DJ Kaotic', genre: 'Open Genre', location: 'USA', time: '2024-12-31T11:00:00-05:00' },
   { name: 'JCK', genre: 'Raw Techno', location: 'Philadelphia, USA', time: '2024-12-31T12:00:00-05:00' },
@@ -8,16 +8,19 @@ const schedule = [
   { name: 'DJ Jigsaw', genre: 'DnB', location: 'UK', time: '2024-12-31T17:00:00-05:00' },
   { name: 'OneWay', genre: 'Hardstyle', location: 'Europe', time: '2024-12-31T18:00:00-05:00' },
   { name: 'NMA (Francisco)', genre: 'Dubstep', location: 'France', time: '2024-12-31T19:00:00-05:00' },
-  // Voeg hier extra DJ's toe
+  // Voeg hier meer DJ's toe
 ];
 
+// Het HTML-element waarin het schema wordt weergegeven
 const scheduleContainer = document.getElementById('schedule');
 
 schedule.forEach(event => {
-  // Zet EST tijd om naar de tijdzone van de gebruiker
-  const estTime = new Date(event.time); // Interpreteer tijd in EST
-  const localTime = estTime.toLocaleString(undefined, {
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Gebruiker's lokale tijdzone
+  // De originele tijd in UTC-05:00
+  const originalTime = new Date(event.time);
+
+  // Converteer de tijd naar de lokale tijd van de gebruiker
+  const localTime = originalTime.toLocaleString(undefined, {
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Lokale tijdzone
     weekday: 'long',
     year: 'numeric',
     month: 'long',
@@ -26,7 +29,7 @@ schedule.forEach(event => {
     minute: '2-digit',
   });
 
-  // Voeg een event-item toe aan de lijst
+  // Maak een nieuwe weergave voor dit schema-item
   const scheduleItem = document.createElement('div');
   scheduleItem.className = 'schedule-item';
   scheduleItem.innerHTML = `
@@ -36,5 +39,6 @@ schedule.forEach(event => {
     <p><strong>Time:</strong> ${localTime}</p>
   `;
 
+  // Voeg het item toe aan de container
   scheduleContainer.appendChild(scheduleItem);
 });
