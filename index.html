@@ -3,13 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VRChat DJ Event Schedule</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Lineup Viewer</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>VRChat DJ Event Schedule</h1>
-  <p>All times are displayed in your local timezone.</p>
-  <div id="schedule"></div>
+  <header>
+    <h1>Event Lineup</h1>
+    <p id="current-time"></p>
+  </header>
+
+  <main>
+    <div class="lineup-container">
+      <div id="lineup-list">
+        <!-- DJ slots komen hier dynamisch -->
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Lineup Viewer</p>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
